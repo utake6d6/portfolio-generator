@@ -1,8 +1,14 @@
-const profileDataArgs = process.argv.slice(2, process.argv.length);
-console.log(profileDataArgs);
+// require allows js file to access fs module functions through the fs assignment
+const fs = require("fs");
+const generatePage = require("./src/page-template.js");
 
-const printProfileData = (profileDataArr) => {
-  profileDataArr.forEach((profileItem) => console.log(profileItem));
-};
+// holds the user command-lin arguments
+const profileDataArgs = process.argv.slice(2);
 
-printProfileData(profileDataArgs);
+const [name, github] = profileDataArgs;
+
+fs.writeFile("./index.html", generatePage(name, github), (err) => {
+  if (err) throw new Error(err);
+
+  console.log("Portfolio complete! Checkout index.html to see the output!");
+});
