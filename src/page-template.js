@@ -17,5 +17,5 @@ const generatePage = (name, github) => {
   </html>
   `;
 };
-
+// allows generatePage to be exported
 module.exports = generatePage;
