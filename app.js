@@ -1,17 +1,9 @@
-// // allows access to inquirer in the app.js file
+// allows import of object being exported from generate-site.js
+const { writeFile, copyFile } = require("./utils/generate-site.js");
+// allows access to inquirer in the app.js file
 const inquirer = require("inquirer");
-// require allows js file to access fs module functions through the fs assignment
-const fs = require("fs");
 // allows access to page-template.js
 const generatePage = require("./src/page-template");
-// // allows html page to be generated
-// const pageHTML = generatePage(name, github);
-
-// fs.writeFile("./index.html", "./index.html", pageHTML, (err) => {
-//   if (err) throw err;
-
-//   console.log("Portfolio complete! Checkout index.html to see the output!");
-// });
 
 // wrapping inquirer.prompt() inside a promptUser function
 const promptUser = () => {
@@ -156,11 +148,27 @@ Add a New Project
 promptUser()
   .then(promptProject)
   .then((portfolioData) => {
-    const pageHTML = generatePage(portfolioData);
-    fs.writeFile("./index.html", pageHTML, (err) => {
-      if (err) throw new Error(err);
-      console.log(
-        "Page created! Check out index.html in this directory to see it!"
-      );
-    });
+    return generatePage(portfolioData);
+  })
+  .then((pageHTML) => {
+    return writeFile(pageHTML);
+  })
+  .then((writeFileResponse) => {
+    console.log(writeFileResponse);
+    return copyFile();
+  })
+  .then((copyFileResponse) => {
+    console.log(copyFileResponse);
+  })
+  .catch((err) => {
+    console.log(err);
   });
+
+// // allows html page to be generated
+// const pageHTML = generatePage(name, github);
+
+// fs.writeFile("./index.html", "./index.html", pageHTML, (err) => {
+//   if (err) throw err;
+
+//   console.log("Portfolio complete! Checkout index.html to see the output!");
+// });
